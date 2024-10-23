@@ -107,23 +107,6 @@ if (dia == 1){
   console.log("Are you dead");
 }
 
-
-function calculadora(numero1, numero2, operador = "invalido"){
-  console.log(numero1 + numero2);
-} if (operador == "-"){
-  console.log(numero1 - numero2);
-} else if (operador == "*"){
-  console.log(numero1 * numero2);
-} else if (operador == "/"){
-    console.log(numero1 / numero2);
-} else if (operador == "**"){
-  console.log( numero1 ** numero2);
-}else if (operador == "%"){
-  console.log(numero1 % numero2);
-} else {
-  console.log("Invalido");
-}
-
 function calculadora2(numero1, numero2, operador = "invalido"){
   if (operador == "+"){
     console.log(numero1 + numero2);
@@ -145,3 +128,26 @@ function calculadora2(numero1, numero2, operador = "invalido"){
 calculadora2(2, 1, "+");
 calculadora2(4, 5, "-")
 calculadora2(8, 9, "**")
+
+
+function semana(dia = "are you dead"){
+    if (dia == "1"){
+      console.log("Lunes");
+    } else if (dia == "2"){
+      console.log("Martes");
+    } else if(dia == "3"){
+      console.log("Miercoles");
+    } else if (dia == "4"){
+      console.log("Jueves");
+    } else if  (dia == "5"){
+      console.log("Viernes");
+    } else if (dia == "6"){
+      console.log("Sabado");
+    }else if (dia == "7"){
+      console.log("Domingo");
+    } else{
+      console.log("are you dead")
+    }
+}
+
+semana(4);
