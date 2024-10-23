@@ -1,0 +1,40 @@
+/*primera variable siempre van arriba */
+/*Mixing simpre */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+#inical {
+  color: blue;
+  /* Mixing */
+}
+#inical p {
+  background-color: red !important;
+}
+
+.columna-centrada {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.columna-top {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 30vh;
+}
+
+.blogs {
+  display: grid;
+  grid-template-columns: repeat(3, 3fr);
+}
+.blogs .blog {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}/*# sourceMappingURL=style.css.map */

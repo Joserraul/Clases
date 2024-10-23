@@ -1,0 +1,40 @@
+
+/*primera variable siempre van arriba
+$base-color: blue
+
+/*Mixing simpre
+
+@mixin columna($horizontal : center, $vertical : center)
+    display: flex
+    flex-direction: column
+    justify-content: $vertical
+    align-items: $horizontal
+
+@mixin grid($columnas)
+    display: grid
+    grid-template-columns: repeat($columnas, 3fr)
+
+*
+    margin: 0
+    padding: 0
+
+#inical
+    color:  $base-color
+
+    p
+        background-color: red !important
+
+    /* Mixing
+
+.columna-centrada
+    @include columna()
+
+.columna-top
+    @include columna(center, flex-start)
+    height: 30vh
+
+.blogs
+    @include grid(3)
+    .blog
+        @include columna(center, flex-start)
+
