@@ -461,6 +461,7 @@ mago3.atacar(mago2);*/
 //--------------------------------------------------------------------------------------------------------------------------
 // ejercicio del profesor
 
+//Creo la clase Personaje
 class Personaje {
   constructor(nombre, vida, ataque, defensa, velocidad){
     this.nombre = nombre;
@@ -474,15 +475,21 @@ class Personaje {
     return `Hola soy ${this.nombre}, un ${clase}`;
   }
 
+  //El metodo para atacar recibe un objetivo
   atacar(objetivo){
-    let ataque = Math.floor(Math.random() * this.ataque);
-    let defensa = Math.floor(Math.random() * objetivo.defensa);
+    //Genero un numero aleatorio entre 0 y el ataque del personaje
+    let ataque = Math.floor(Math.random() * (this.ataque + 1)) ;
+    //Genero un numero aleatorio entre 0 y la defensa del objetivo
+    let defensa = Math.floor(Math.random() * (objetivo.defensa + 1));
+    //Calculo el daño
     let danio = ataque - defensa;
+    //Si el daño es menor a 0, lo cambio a 0
     if(danio < 0){
       danio = 0;
     }
-    objetivo.vida -= danio;
-    console.log (`${this.nombre} ataca a ${objetivo.nombre} y le hace ${danio} de daño`);
+    //Imprimo el daño que se hizo
+    console.log(`${this.nombre} ataca a ${objetivo.nombre} y le hace ${danio} de daño`);
+    //Retorno el daño hecho
     return danio;
   }
 }
@@ -494,9 +501,443 @@ class Mago extends Personaje {
   }
 
   lanzarHechizo(objetivo){
+    //Seleccionar un hechizo aleatorio
     let hechizo = this.hechizos[Math.floor(Math.random() * this.hechizos.length)];
-    let danio = math.floor(math.random() * hechizo.danio);
+    let ataque = Math.floor((Math.random() * (hechizo.danio + 1)) );
+    let defensa = Math.floor(Math.random() * (objetivo.defensa + 1));
+    let danio = ataque - defensa;
+    if(danio < 0){
+      danio = 0;
+    }
     console.log(`${this.nombre} lanza un hechizo de ${hechizo.nombre} a ${objetivo.nombre} y le hace ${danio} de daño`);
     return danio;
   }
 }
+
+class Guerrero extends Personaje {
+  constructor(nombre, vida, ataque, defensa, velocidad, armas){
+    super(nombre, vida, ataque, defensa, velocidad);
+    this.armas = armas;
+  }
+
+  atacarConArma(objetivo){
+    let arma = this.armas[Math.floor(Math.random() * this.armas.length)];
+    let ataque = Math.floor(Math.random() * (arma.danio + 1));
+    let defensa = Math.floor(Math.random() * (objetivo.defensa + 1));
+    let danio = ataque - defensa;
+    if(danio < 0){
+      danio = 0;
+    }
+    console.log(`${this.nombre} ataca con ${arma.nombre} a ${objetivo.nombre} y le hace ${danio} de daño`);
+    return danio;
+  }
+}
+
+class Arquero extends Personaje {
+  constructor(nombre, vida, ataque, defensa, velocidad, flechas){
+    super(nombre, vida, ataque, defensa, velocidad);
+    this.flechas = flechas;
+  }
+
+  dispararFlecha(objetivo){
+    let flecha = this.flechas[Math.floor(Math.random() * this.flechas.length)];
+    let ataque = Math.floor(Math.random() * (flecha.danio + 1));
+    let defensa = Math.floor(Math.random() * (objetivo.defensa + 1));
+    let danio = ataque - defensa;
+    if(danio < 0){
+      danio = 0;
+    }
+    console.log(`${this.nombre} dispara una flecha a ${objetivo.nombre} y le hace ${danio} de daño`);
+    return danio;
+  }
+}
+
+let mago1 = new Mago("Gandalf", 100, 50, 20, 10, [
+  {nombre: "Fuego", danio: 120},
+  {nombre: "Hielo", danio: 150}
+]);
+
+let mago2 = new Mago("Merlin", 100, 50, 20, 10, [
+  {nombre: "Rayo", danio: 180},
+  {nombre: "Viento", danio: 100}
+]);
+
+let guerrero1 = new Guerrero("Aragorn", 150, 70, 30, 5, [
+  {nombre: "Espada", danio: 100},
+  {nombre: "Hacha", danio: 110}
+]);
+
+let guerrero2 = new Guerrero("Conan", 150, 70, 30, 5, [
+  {nombre: "Maza", danio: 120},
+  {nombre: "Lanza", danio: 105}
+]);
+
+let arquero1 = new Arquero("Legolas", 120, 60, 20, 15, [
+  {nombre: "Flecha de fuego", danio: 110},
+  {nombre: "Flecha de hielo", danio: 120}
+]);
+
+let personajes = [mago1, mago2, guerrero1, guerrero2, arquero1];
+let personajes_vivos = personajes;
+let ronda = 1;
+while( personajes_vivos.length > 1 ){
+  console.log(`Ronda ${ronda}`);
+  //Creo un arreglo de objetos con la velocidad de cada personaje
+  let turno = [];
+  // Lleno el arreglo turno con los personajes vivos y su velocidad
+  for(let personaje of personajes_vivos){
+    turno.push(
+      {
+        personaje: personaje,
+        velocidad: Math.floor(Math.random() * (personaje.velocidad + 1))
+      }
+    );
+  }
+  //Organizar de mayor a menor velocidad
+  turno.sort((a, b) => b.velocidad - a.velocidad);
+
+  //Comienza la ronda de ataques
+  for(let i = 0; i < turno.length; i++){
+    //Seleccionar al personaje que ataca
+    let atacante = turno[i].personaje;
+
+    //Seleccionar al objetivo aleatorio
+    do{
+      var objetivo = personajes_vivos[Math.floor(Math.random() * personajes_vivos.length)];
+    } while(atacante === objetivo);
+
+    //Creo variable para guardar el daño
+    let danio = 0;
+    //Verifico si el atacante es un mago
+    if(atacante instanceof Mago){
+      //Creo una probabilidad de 50% para lanzar hechizo o atacar
+      let probabilidad = Math.floor(Math.random() * 2);
+      if(probabilidad === 0){
+        danio = atacante.lanzarHechizo(objetivo);
+      } else {
+        danio = atacante.atacar(objetivo);
+      }
+    } else if(atacante instanceof Guerrero){
+      // Creo una probabilidad de 50% para atacar con arma o atacar
+      let probabilidad = Math.floor(Math.random() * 2);
+      if(probabilidad === 0){
+        danio = atacante.atacarConArma(objetivo);
+      } else {
+        danio = atacante.atacar(objetivo);
+      }
+    } else if(atacante instanceof Arquero){
+      // Creo una probabilidad de 50% para disparar flecha o atacar
+      let probabilidad = Math.floor(Math.random() * 2);
+      if(probabilidad === 0){
+        danio = atacante.dispararFlecha(objetivo);
+      } else {
+        danio = atacante.atacar(objetivo);
+      }
+    }
+    //Restar la vida al objetivo
+    objetivo.vida -= danio;
+    console.log(`${objetivo.nombre} tiene ${objetivo.vida} de vida`);
+    //objetivo.vida = objetivo.vida - danio;
+    //Verificar si el objetivo murio
+    if( objetivo.vida <= 0 ){
+      console.log(`${objetivo.nombre} ha muerto`);
+      //Eliminar al personaje del arreglo de personajes vivos
+      personajes_vivos = personajes_vivos.filter(personaje => personaje !== objetivo);
+    }
+
+    //Verificar si solo queda un personaje vivo
+    if(personajes_vivos.length === 1){
+      console.log(`${personajes_vivos[0].nombre} ha ganado la batalla`);
+      break;
+    }
+  }
+  ronda++;
+}
+
+
+/*
+
+Ejercicio: *Sistema de Gestión de Vehículos*
+
+Descripción: Imagina que estás creando un sistema simple para gestionar vehículos 
+en una pequeña empresa de alquiler de autos. El sistema necesita manejar información 
+básica sobre cada vehículo y realizar operaciones de alquiler y devolución.
+
+Requisitos:
+
+1. Clase Vehiculo:
+   - Atributos:
+     - marca (string): la marca del vehículo (por ejemplo, Toyota, Ford).
+     - modelo (string): el modelo del vehículo (por ejemplo, Corolla, Mustang).
+     - año (int): el año de fabricación del vehículo.
+     - disponible (boolean): indica si el vehículo está disponible para alquilar.
+   - Métodos:
+     - alquilar(): cambia el estado de disponibilidad a false si el vehículo está disponible. Si no está disponible, muestra un mensaje indicando que ya está alquilado.
+     - devolver(): cambia el estado de disponibilidad a true.
+     - informacion(): imprime toda la información del vehículo (marca, modelo, año, disponibilidad).
+
+2. Clase EmpresaAlquiler:
+   - Atributos:
+     - flota (lista de objetos Vehiculo): lista de todos los vehículos disponibles en la empresa.
+   - Métodos:
+     - agregar_vehiculo(vehiculo): añade un vehículo a la flota.
+     - mostrar_vehiculos_disponibles(): imprime la información de todos los vehículos que están disponibles para alquilar.
+     - mostrar_vehiculos(): imprime la información de todos los vehículos en la flota.
+     - buscar_vehiculo(marca, modelo): busca un vehículo en la flota según la marca y el modelo, y devuelve el objeto Vehiculo si se encuentra disponible. Si no está disponible, muestra un mensaje indicando que el vehículo no está disponible o no se encontró.
+     
+
+Ejemplo de Uso:
+
+1. Crear algunos vehículos y añadirlos a la flota de la empresa.
+2. Mostrar la lista de vehículos disponibles.
+3. Alquilar un vehículo y verificar si se actualiza su estado.
+4. Devolver un vehículo y verificar si vuelve a estar disponible.
+*/
+
+/**
+ * @class Vehiculo - Clase para gestionar la información de un vehículo
+ */
+class Vehiculo {
+  /**
+   * @param {string} marca - Marca del vehículo
+   * @param {string} modelo - Modelo del vehículo
+   * @param {number} anio - Año de fabricación del vehículo
+   * @param {boolean} disponible - Indica si el vehículo está disponible para alquilar (por defecto true)
+   */
+  constructor(marca, modelo, anio, disponible = true) {
+    this.marca = marca;
+    this.modelo = modelo;
+    this.anio = anio;
+    this.disponible = disponible;
+  }
+
+  /**
+   * @method alquilar - Cambia el estado de disponibilidad del vehículo a false si está disponible
+   */
+  alquilar() {
+    if (this.disponible) {
+      console.log(
+        `Has alquilado el carro ${this.marca} ${this.modelo} del ${this.anio}`
+      );
+      this.disponible = false;
+    } else {
+      console.log(
+        `El carro ${this.marca} ${this.modelo} del año ${this.anio} esta alquilado`
+      );
+    }
+  }
+
+  /**
+   * @method devolver - Cambia el estado de disponibilidad del vehículo a true si no está disponible
+   */
+  devolver() {
+    if (!this.disponible) {
+      console.log(
+        `Estas devolviendo el carro ${this.marca} ${this.modelo} del ${this.anio}`
+      );
+      this.disponible = true;
+    } else {
+      console.log(`No puedes devolver un auto que no esta alquilado`);
+    }
+  }
+
+  /**
+   *  @method informacion - Imprime toda la información del vehículo (marca, modelo, año, disponibilidad)
+   */
+  informacion() {
+    /*
+    console.log(this.modelo, this.marca, this.anio, this.disponible)
+    console.log("Auto modelo: " + this.modelo + " marca: " + this.marca +
+      " año: " + this.anio + " disponibilidad: " + this.disponible
+    );
+    console.log(
+      `Información del vehiculo:
+      \n Modelo: ${this.modelo}
+      \n Marca: ${this.marca}
+      \n Año: ${this.anio}
+      \n Disponibilidad: ${this.disponible}`
+    )
+    */
+    console.log(
+      `
+  Información del vehiculo:
+  Modelo: ${this.modelo}
+  Marca: ${this.marca}
+  Año: ${this.anio}
+  Disponibilidad: ${this.disponible ? "Disponible" : "Ocupado"}
+`
+    );
+  }
+}
+
+/**
+ * @class EmpresaAlquiler - Clase para gestionar la flota de vehiculos de una empresa de alquiler
+ */
+class EmpresaAlquiler {
+  /**
+   * @constructor
+   * @param {array} flota - Lista de vehiculos disponibles en la empresa
+   */
+  constructor(flota = []) {
+    this.flota = flota;
+  }
+
+  /**
+   * @method agregarVehiculo - Añade un vehículo a la flota
+   * @param {object} vehiculo - Objeto vehiculo a agregar a la flota 
+   */
+  agregarVehiculo(vehiculo) {
+    this.flota.push(vehiculo);
+  }
+
+  /**
+   * @method mostrarVehiculosDisponibles - Muestra la información de todos los vehículos que están disponibles para alquilar
+   */
+  mostrarVehiculosDisponibles() {
+    /*
+      let vehiculos_disponibles = this.flota.filter(
+        (vehiculo) => vehiculo.disponible === true
+      );
+      for (vehiculo of vehiculos_disponibles) {
+        console.log(
+        `
+          Información del vehiculo:
+          Modelo: ${vehiculo.modelo}
+          Marca: ${vehiculo.marca}
+          Año: ${vehiculo.anio}
+          Disponibilidad: ${vehiculo.disponible ? "Disponible" : "Ocupado"}
+        `);
+    */
+
+    for (let vehiculo of this.flota) {
+      if (vehiculo.disponible) {
+        console.log(
+          `
+            Información del vehiculo:
+            Modelo: ${vehiculo.modelo}
+            Marca: ${vehiculo.marca}
+            Año: ${vehiculo.anio}
+            Disponibilidad: ${vehiculo.disponible ? "Disponible" : "Ocupado"}
+        `
+        );
+      }
+    }
+  }
+
+  /**
+   * @method mostrarVehiculos - Muestra la información de todos los vehículos en la flota
+   */
+  mostrarVehiculos() {
+    for (let vehiculo of this.flota) {
+      console.log(
+        `
+            Información del vehiculo:
+            Modelo: ${vehiculo.modelo}
+            Marca: ${vehiculo.marca}
+            Año: ${vehiculo.anio}
+            Disponibilidad: ${vehiculo.disponible ? "Disponible" : "Ocupado"}
+        `
+      );
+    }
+  }
+}
+
+//1
+let vehiculo1 = new Vehiculo("Ford", "Camaro", "1997");
+let vehiculo2 = new Vehiculo("Harley-Davidson", "San Luis", "2023");
+let vehiculo3 = new Vehiculo("Jeep", "Wagoneer", "2021");
+
+let vehiculos = [vehiculo1, vehiculo2, vehiculo3];
+
+//2
+let autorent = new EmpresaAlquiler(vehiculos);
+autorent.mostrarVehiculosDisponibles();
+
+//3
+autorent.flota[2].alquilar();
+autorent.flota[2].informacion();
+
+
+
+//PROYECTO DE LA SECCION 2 
+
+/*
+
+  1. Crea un juego de piedra papel o tijera utilizando
+  funciones y ciclos.
+
+  El juego debe permitir al usuario seleccionar una opcion
+  y la computadora seleccionara una opcion aleatoria.
+
+  Las opciones son:
+  - Piedra
+  - Papel
+  - Tijera
+
+  Las reglas son:
+  - La piedra aplasta la tijera
+  - La tijera corta el papel
+  - El papel envuelve la piedra
+
+  El juego debe de imprimir quien gano y si el usuario
+  desea seguir jugando.
+
+  El juego debe de terminar cuando el usuario seleccione
+  que no desea seguir jugando.
+
+  Ademas debes de tener un contador que indique cuantas
+  partidas se han jugado, cuantas ha ganado el usuario
+  y cuantas la computadora.
+
+  Puedes utilizar la funcion prompt() para obtener la
+  seleccion del usuario.
+
+  2. Crea un juego de adivinar un numero aleatorio
+  entre 1 y 100.
+
+  El juego debe de permitir al usuario ingresar un numero
+  y la computadora debe de generar un numero aleatorio
+  entre 1 y 100.
+
+  El juego debe de imprimir si el numero ingresado por
+  el usuario es mayor, menor o igual al numero generado
+  por la computadora.
+
+  El juego debe de terminar cuando el usuario adivine
+  el numero.
+
+  Ademas debes de tener un contador que se reste uno cada
+  vez que el usuario ingrese un numero.
+
+  El usuario debe de tener un maximo de 6 intentos para
+  adivinar el numero.
+
+  3. Crea un programa orientado a objetos que sea un gestor
+  de tareas.
+
+  El programa debe de tener las siguientes clases:
+  - Tarea
+    - Propiedades: nombre, descripcion, fecha, completada
+
+  - ListaTareas
+    - Propiedades: tareas (array de tareas)
+    - Metodos: Agregar tarea(tarea), Completar tarea(tarea), Eliminar tarea(tarea), 
+    ver tareas()
+
+  El programa debe de permitir al usuario agregar tareas,
+  completar tareas y eliminar tareas. Ademas debe de permitir
+  al usuario ver todas las tareas. 
+
+  El programa debe de tener un menu que permita al usuario
+  seleccionar una opcion.
+
+  El programa debe de terminar cuando el usuario seleccione
+  salir.
+
+  debes usar alert() y prompt() para interactuar con el usuario.
+
+
+  Fecha de entrega: 13/11/2024
+
+  */
+
