@@ -24,9 +24,22 @@ const newArray = numbers[0].map(number => number * 2);
 
 console.log(newArray);
 
+// otro ejercecio
+
+const number2 = [12, 13, 14, 15];
+
+const resultado = number2.map(number2 => {
+  if (number2 === 13){
+    return number2 * 2;
+  }
+  return number;
+})
+
+console.log(resultado);
+
 //spread operator
 
-/* 
+/*
 
 Es un operador que permite expandir elementos de un array, realizando una copia
 del array original sin modificarlo y sin perder sus elementos, y agregando nuevos
@@ -96,6 +109,8 @@ console.log(person1Name);
 
 const {names, age, country, city} = person1; //Extrae las propiedades del objeto person1 y las asigna a las variables
 
+console.log(names)
+
 //Para Arrays
 
 const colors =["red", "green", "blue", "yellow"];
@@ -103,18 +118,32 @@ const colors =["red", "green", "blue", "yellow"];
 const [color1, color2, color3, color4] = colors;
 
 console.log(color1);
+console.log(color4)
 
 //En funciones
 
-function IntroduceMe({names}) {
-  console.log(`Hola, soy ${names}, el desarrollador de este sitio web`);
+/**
+ * @const realizamos un objeto con 3 elementos.
+ * @function le agregamos lo que debe imprimir, tomando el elemento del objeto.
+ * @IntroduceMe imprimimos llamando directamente la funcion.
+ */
+
+const person2 = {
+  name: "Joserraul",
+  cuntry:"Venezuela",
+  old: 27
+
 }
 
-IntroduceMe(person1);
+function IntroduceMe({name}) {
+  console.log(`Hola, soy ${name}, el desarrollador de este sitio web`);
+}
+
+IntroduceMe(person2);
 
 //DOM
 
-/* 
+/*
 
 El "DOM" (Document Object Model o *Modelo de Objeto del Documento*), también conocido
 como árbol de elementos, es una representación en forma de árbol de la estructura de
@@ -124,21 +153,32 @@ Cada nodo en el árbol de elementos representa un elemento HTML en la página we
 
 El árbol de elementos comienza con el elemento raíz, que es "document", y luego se
 descompone en elementos hijo, nietos, bisnietos, etc. Cada elemento tiene
-propiedades, como id, class, name, value, etc... que pueden ser accedidas mediante 
+propiedades, como id, class, name, value, etc... que pueden ser accedidas mediante
 selectores y manipuladas con JavaScript.
 
 */
 
 //Ejemplo de uso de DOM
 
-//Crear un nuevo elemento del DOM
+// ya esta hecho dos botones que deben realizar algo al ser presionados.
+
+const boton1 = document.getElementById("buton-buenoo")
+
+boton1.addEventListener("click", () => {
+  console.log("Presionaste el boton bueno");
+})
+
+// Crear un nuevo elemento del DOM
 
 const newDiv = document.createElement("div")
+const newbutton = document.createElement("button")
 
 //Propiedades de un elemento del dom manipulables desde js
 
 //innerHTML: Permite insertar HTML dentro del elemento
 newDiv.innerHTML = `<h1>Esto es un nuevo div</h1>`
+newbutton.innerHTML = '<button>Esto es nuevo</button>'
+newDiv.innerHTML = `<h1>Esto es un nuevo div</h1><button>Esto es nuevo</button>`
 
 //className: Permite cambiar la clase del elemento
 newDiv.className = "Button"
@@ -156,7 +196,7 @@ newDiv.innerText = "Esto es un parrafo"
 //appendChild: Permite agregar un elemento hijo al elemento padre
 document.body.appendChild(newDiv)
 
-//Selectores
+//Selectores  
 
 /* 
 
