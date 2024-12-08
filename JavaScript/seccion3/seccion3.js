@@ -162,11 +162,6 @@ selectores y manipuladas con JavaScript.
 
 // ya esta hecho dos botones que deben realizar algo al ser presionados.
 
-const boton1 = document.getElementById("buton-buenoo")
-
-boton1.addEventListener("click", () => {
-  console.log("Presionaste el boton bueno");
-})
 
 // Crear un nuevo elemento del DOM
 
@@ -302,6 +297,7 @@ input.addEventListener("keydown", function(event){
     saludar();
   }
 });
+
 let videos = [
   {
     titulo: "Video 1",
