@@ -1,4 +1,3 @@
-
 function Slider() {
   return (
     <section>

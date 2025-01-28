@@ -1,25 +1,25 @@
-import Button from "../components/general/Button";
-import Article from "../components/Article";
+import Button from "./../components/general/Button";
+import Article from "./../components/general/Article";
 
-function Home (){
-    return (
-      <>
-        <section>
-          Header
-          <Button className="p-2 rounded-md bg-blue-600 text-white">Hola Mundo</Button>
-          <Article>
-            <h2>Titulo</h2>
-            <p>parrafo</p>
-          </Article>
-        </section>
-        <section>
-          Products
-        </section>
-        <section>
-          More Products
-        </section>
-      </>
-    )
+function Home() {
+  return (
+    <>
+      <section>
+        Header
+        <Button texto="Hola Mundo" />
+        <Article>
+          <h2>Titulo</h2>
+          <p>Parrafo</p>
+        </Article>
+      </section>
+      <section>
+        Products
+      </section>
+      <section>
+        More info
+      </section>
+    </>
+  );
 }
 
 export default Home;
