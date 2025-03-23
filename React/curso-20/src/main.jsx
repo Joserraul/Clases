@@ -12,10 +12,10 @@ createRoot(document.getElementById('root')).render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/test" element={<Test />} />
-          <Route path="/Hooks" element={<Hooks />} />
-          <Route path="/Movies" element={<Movies />} />
-          <Route path="*" element={<h1>Not Found</h1>} />
+            <Route path="/test" element={<Test />} />
+            <Route path="/Hooks" element={<Hooks />} />
+            <Route path="/Movies" element={<Movies />} />
+            <Route path="*" element={<h1>Not Found</h1>} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
